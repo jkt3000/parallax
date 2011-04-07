@@ -1,49 +1,45 @@
 /*
  * Super Simple Parallax Jquery Plugin
- * by John Tajima
+ * John Tajima
+ * 
  */
-
-// <div id="xyz" class="foreground" data-scrollStart="100px" data-scrollStop="500px" data-scrollFactor="1">some content</div>
-// <div id="xyz" class="foreground" data-scrollStart="500px" data-scrollStop="1000px" data-scrollFactor="2">some content</div>
-//
-// $(document).parallax({ frameClass: 'frame' })
-
-
 
 (function($) {
   $.fn.parallax = function(options) { 
     var opts = $.extend({}, $.fn.parallax.defaults, options);
 
-    // set windowSize
-    var windowSize = parseInt($(window).height(), 10);
- 
-    // update windowSize on window resize event 
+    var windowSize = $(window).height();    // store window size
+    // update window size if when gets resized
     $(window).resize(function(){
-      windowSize = parseInt($(window).height(), 10);
+      windowSize = $(window).height();
     });
     
-    // cache all frames
+    // cache frames and add event listener for 'inview'
     $.fn.parallax.frames = $('.' + opts.frameClass);
     $($.fn.parallax.frames).bind('inview', frameInViewHandler);
-    
-    // get curr pos
-    var prevPos = $(this).scrollTop();
-    
+
+    // init all data-scrollFactor elements and store orig pos & start/stop and factor
+    $("[data-scrollFactor]").each(function(i,el){
+      $(el).data({
+        origPos: $(el).position().top,
+        scrollFactor: $(el).attr('data-scrollFactor'),
+        scrollStart: $(el).attr('data-scrollStart'),
+        scrollEnd: $(el).attr('data-scrollEnd')
+      });
+    });
+
     // listen to scrolling
     $(this).scroll(function(e){
       var currPos = $(this).scrollTop();
-      var windowBottom = currPos + windowSize;
-      
-      var frames = getVisibleFrames(currPos, windowBottom);
+      var frames = getVisibleFrames(currPos, currPos + windowSize);
       if (frames.length > 0) { 
         $.each(frames, function(i,el){
-          $(el).trigger('inview',  {'prevPos':prevPos, 'currPos':currPos, 'windowSize':windowSize});
-        });        
+          $(el).trigger('inview', {'currPos':currPos});
+        });
       }
-      // update old pos
-      prevPos = currPos;
     });
     
+    // returns frames which are currently visible in browser window
     function getVisibleFrames(top, bot) {
       return $.map($.fn.parallax.frames, function(el, i){
         var frameTop = $(el).position().top;
@@ -53,32 +49,21 @@
     }
 
     // callback when frame is in view
-    function frameInViewHandler(e, data) {
-      console.log("in view "+ e.target.id);
-      var $frame     = $(e.target);
-      var currPos    = data.currPos;
-      var prevPos    = data.prevPos;
-      var delta      = data.currPos - data.prevPos;
-      var windowSize = data.windowSize;      
-      var relPos;
-      if ($frame.position().top === 0) {
-        relPos = currPos;
-      } else {
-        relPos = currPos - $frame.position().top + windowSize;
-      }
-
-      console.log("top: " + $frame.position().top + " currPos: "+currPos + " prevPos " + prevPos + " Delta: "+delta + " relPos " + relPos);
+    // repositions scrollable elements by relPos * factor
+    function frameInViewHandler(e, params) {
+      var $frame   = $(e.target);
+      var frameTop = $frame.position().top;
+      var relPos   = frameTop === 0 ? params.currPos : params.currPos - frameTop + windowSize;      
+      var currPos  = params.currPos;
       
       $frame.children('[data-scrollFactor]').each(function(i,el){
-        var moveby      = delta * $(el).attr('data-scrollFactor');
-        var scrollStart = $(el).attr('data-scrollStart');
-        var scrollEnd   = $(el).attr('data-scrollEnd');
-        console.log("start: " + scrollStart + " end: " + scrollEnd + " by: " + moveby);
-        if (relPos < scrollStart || relPos > scrollEnd) {
+        var data = $(el).data();
+        if (relPos < data.scrollStart || relPos > data.scrollEnd) {
           return;
         }
-        console.log("el top is now "+($(el).position().top + moveby))
-        $(el).css('top', $(el).position().top + moveby + "px");
+
+        var newPos = data.origPos + (currPos - frameTop) * data.scrollFactor;
+        $(el).css({'top':newPos + 'px'});
       });
     };
 
@@ -87,8 +72,7 @@
 
   $.fn.parallax.frames = [];
   $.fn.parallax.defaults = {
-    frameClass: 'frame',
-    objectClass: 'obj'
+    frameClass: 'frame'
   };
 
   /* private functions */
