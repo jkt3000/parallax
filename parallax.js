@@ -64,7 +64,7 @@
 
         var newPos = data.origPos + (currPos - frameTop) * data.scrollFactor;
         //$(el).css({'top':newPos + 'px'});
-        $(el).animate({'top':newPos+"px"}, 40);
+        $(el).animate({'top':newPos+"px"}, 20);
       });
     };
 
