@@ -56,14 +56,15 @@
       var relPos   = frameTop === 0 ? params.currPos : params.currPos - frameTop + windowSize;      
       var currPos  = params.currPos;
       
-      $frame.children('[data-scrollFactor]').each(function(i,el){
+      $frame.find('[data-scrollFactor]').each(function(i,el){
         var data = $(el).data();
         if (relPos < data.scrollStart || relPos > data.scrollEnd) {
           return;
         }
 
         var newPos = data.origPos + (currPos - frameTop) * data.scrollFactor;
-        $(el).css({'top':newPos + 'px'});
+        //$(el).css({'top':newPos + 'px'});
+        $(el).animate({'top':newPos+"px"}, 40);
       });
     };
 
