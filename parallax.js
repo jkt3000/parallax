@@ -53,7 +53,7 @@
     function frameInViewHandler(e, params) {
       var $frame   = $(e.target);
       var frameTop = $frame.position().top;
-      var relPos   = frameTop === 0 ? params.currPos : params.currPos - frameTop + windowSize;      
+      var relPos   = frameTop === 0 ? params.currPos : params.currPos - frameTop;      
       var currPos  = params.currPos;
       
       $frame.find('[data-scrollFactor]').each(function(i,el){
