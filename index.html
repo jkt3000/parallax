@@ -10,17 +10,17 @@
     .frame { height: 1200px; display:block; position:relative;}
     .box { padding: 10px; margin: 10px; min-height: 100px; border:1px solid #ddd; width: 30%; float:left; }
     
-    .obj { position:absolute; padding: 20px; width: 200px; height: 100px; }
+    .obj { position:fixed; padding: 20px; width: 200px; height: 100px; }
     .foreground { z-index: 20; opacity: 0.5; left: 150px; background: #ff0000;}
     .midground  { z-index: 10; opacity: 0.8; left: 300px; background: #00ff00;}
-    .background { z-index: 1;  opacity: 1; left: 350px; background: #0000ff;}
+    .background { z-index: 1;  opacity: 1; left: 350px;   background: #0000ff;}
     
     #object1 { top: 300px;}
     #object2 { top: 400px;}
-    #object3 { top: 500px;}
-    #object4 { top: 600px;}
-    #object5 { top: 300px;}
-    #object6 { top: 400px;}
+    #object3 { top: 1500px;}
+    #object4 { top: 1600px;}
+    #object5 { top: 2600px;}
+    #object6 { top: 2700px;}
     
   </style>
 </head>
@@ -33,11 +33,11 @@
       <p>Lorem ipsum dolor sit amet</p>
     </div>
     
-    <div class="midground obj" id="object1" data-scrollFactor=".8" data-scrollStart="1" data-scrollEnd="600">
+    <div class="midground obj" id="object1" data-scrollFactor=".5" data-scrollStart="1" data-scrollEnd="600">
       <h2>This is a object</h2>      
     </div>
     
-    <div class="foreground obj" id="object2" data-scrollFactor=".3" data-scrollStart="1" data-scrollEnd="600">
+    <div class="foreground obj" id="object2" data-scrollFactor="-.2" data-scrollStart="1" data-scrollEnd="600">
       <h3>This is another box</h3>
     </div>
     
@@ -58,11 +58,11 @@
 
   <!-- frame -->
   <div id="beta" class="frame" style="background: #f8f; overflow:hidden">
-    <div class="midground obj" id="object3" data-scrollFactor=".7" data-scrollStart="300" data-scrollEnd="700">
+    <div class="midground obj" id="object3" data-scrollFactor=".7" data-scrollStart="900" data-scrollEnd="1200">
       <h2>This is a object</h2>      
     </div>
     
-    <div class="foreground obj" id="object4" data-scrollFactor=".5" data-scrollStart="400" data-scrollEnd="800">
+    <div class="foreground obj" id="object4" data-scrollFactor=".5" data-scrollStart="1000" data-scrollEnd="1200">
       <h3>This is another box</h3>
     </div>
 
@@ -79,11 +79,11 @@
   
   <!-- frame -->  
   <div id="gamma" class="frame" style="background: #ff8">
-    <div class="midground obj" id="object5" data-scrollFactor=".4" data-scrollStart="0" data-scrollEnd="500" style="background:none">
+    <div class="midground obj" id="object5" data-scrollFactor=".4" data-scrollStart="1600" data-scrollEnd="1900" style="background:none">
       <h2>This IS A CLEAR BOX</h2>      
     </div>
     
-    <div class="background obj" id="object6" data-scrollFactor=".5" data-scrollStart="200" data-scrollEnd="700">
+    <div class="background obj" id="object6" data-scrollFactor="-.4" data-scrollStart="2000" data-scrollEnd="2400">
       <h3>This is another box</h3>
     </div>
 

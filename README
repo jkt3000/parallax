@@ -3,5 +3,23 @@ by John Tajima, Copyright 2010
 
 A super simple parallax-like jQuery plugin.
 
+Define any HTML element you want to have move with the following data attributes:
+ data-scrollFactor => +/- times the scroll amount (ie: 0.5 moves 1/2 the amount of scroll, -0.8 moves .8 times in the opposite direction)
+ data-scrollStart  => absolute px from top when you want to the scroll factor to take effect
+ data-scrollEnd    => absolute px from top when you wish to ignore scroll factor
+ 
+Define in css the elements to be position:fixed and any other important values, such as z-index.
+
+eg:
+<div class="layer1" data-scrollFactor="0.5" data-scrollStart="100" data-scrollEnd="300">My parallax element</div>
+<div class="layer2" data-scrollFactor="-0.3" data-scrollStart="200" data-scrollEnd="500">My parallax element moves up instead</div>
+
+<script>
+ $(document).parallax();
+</script>
+
+
+* Not tested in IE!
+
 
 
